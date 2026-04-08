@@ -3,7 +3,7 @@
 const express = require('express');
 const app = express();
 let messages = [
-  { id: 1, text: "Welcome to the message board!", author: "Admin" },
+    { id: 1, text: "Welcome to the message board!", author: "Admin" },
 ];
 let nextId = 2;
 
@@ -37,6 +37,11 @@ app.get('/api/time', (req, res) => {
         "message": "Current server time"
     });
 });
+
+app.get('/api/headers', (req, res) => {
+    res.json(req.headers);
+});
+
 
 app.get('/api/greet/:name', (req, res) => {
     let name = req.params.name;
@@ -80,41 +85,43 @@ app.get('/api/math', (req, res) => {
 });
 
 app.get('/api/slow', (req, res) => {
-  setTimeout(() => {
-    res.json({
-      message: "Sorry for the wait!",
-      delayMs: 3000
-    });
-  }, 3000);
+    setTimeout(() => {
+        res.json({
+            message: "Sorry for the wait!",
+            delayMs: 3000
+        });
+    }, 3000);
 });
 
 app.get('/api/unreliable', (req, res) => {
-  const rand = Math.random();
-  if (rand < 0.5) {
-    res.status(500).json({
-      error: "Server had a bad day. Try again!"
-    });
-  } else {
-    res.json({
-      message: "Lucky! It worked this time.",
-      luckyNumber: Math.floor(Math.random() * 100)
-    });
-  }
+    const rand = Math.random();
+    if (rand < 0.5) {
+        res.status(500).json({
+            error: "Server had a bad day. Try again!"
+        });
+    } else {
+        res.json({
+            message: "Lucky! It worked this time.",
+            luckyNumber: Math.floor(Math.random() * 100)
+        });
+    }
 });
 
 app.get('/api/messages', (req, res) => {
-    res.json({"messages": messages});
+    res.json({ "messages": messages });
 });
 
-app.post('/api/messages', (req,res) => {
+app.post('/api/messages', (req, res) => {
 
     console.log(req.body);
 
-    if (req.body.text != null && req.body.author != null){
-        let newResp = {id: nextId,
-        text: req.body.text,
-        author: req.body.author};
-        nextId++;    
+    if (req.body.text != null && req.body.author != null) {
+        let newResp = {
+            id: nextId,
+            text: req.body.text,
+            author: req.body.author
+        };
+        nextId++;
 
         messages.push(newResp);
 
