@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Fetch Lab</title>
- 
+
   <!-- IMPORT BOOTSTRAP HERE! -->
 </head>
+
 <body class="bg-light">
   <main class="container py-4">
     <h1 class="mb-4">Fetch Lab</h1>
- 
+
     <section id="hello-section" class="card mb-4">
       <div class="card-body">
         <h2 class="h4">1. Hello (text response)</h2>
@@ -20,35 +22,67 @@
         </div>
       </div>
     </section>
-    <!-- You will add more sections below -->
-    <script src = "server.js">
-    </script>
+    <form name="jjj" id="input-form" action="https://formspree.io/f/mreodrkq">
+
+      <label for="text">Message</label>
+      <input name="text" id="text" type="text">
+      <label for="author">Author</label>
+      <input name="author" id="author" type="text">
+      <label for="email">Email</label>
+      <input name="email" id="email" type="email">
+
+      <input type="submit" id="webhook"></input>
+
+    </form>
+
+
+
     <script>
-        const btnHello = document.querySelector("#hwllo-btn");
-        btnHello.addEventListener("click", makeRequest);
-        // Your fetch code goes here
-        function makeRequest(){
-            fetch("https://psychic-lamp-pvj9g59pgw539prw-8080.app.github.dev/hello")
-                .then(statusCheck)
-                .then (resp => resp.json())
-                .then(handleResponse)
-                .catch(handleError)
-        }
+      // const btnHello = document.querySelector("#hwllo-btn");
+      // btnHello.addEventListener("click", makeRequest);
+      // Your fetch code goes here
+      function makeRequest() {
+        fetch("https://psychic-lamp-pvj9g59pgw539prw-8080.app.github.dev/hello")
+          .then(statusCheck)
+          .then(resp => resp.json())
+          .then(handleResponse)
+          .catch(handleError)
+      }
 
-        async function statusCheck(res) {
-            if (!res.ok){
-                throw new Error(await res.text());
-            }
-            return res;
+      async function statusCheck(res) {
+        if (!res.ok) {
+          throw new Error(await res.text());
         }
+        return res;
+      }
 
-        function handleResponse(res){
-            const respLoc = document.querySelector(".h4");
+      function handleResponse(res) {
+        const respLoc = document.querySelector(".h4");
 
-            respLoc.textContent = res;
-        }
-        
+        respLoc.textContent = res;
+      }
+
+
+
+      document.getElementById("input-form").addEventListener("submit", function (e) {
+        e.preventDefault();
+        let url = "https://potential-guide-jjq5v64xgxq6h59r-8080.app.github.dev/api/messages";
+        let params = new FormData(document.getElementById("input-form")); // pass in entire form tag
+        fetch(url, { method: "POST", body: params })
+          .then(statusCheck)
+          .then(resp => resp.json())
+          .then(handleResponse)
+          .catch(handleError);
+      });
+
+
+
+
+
+
+
     </script>
   </main>
 </body>
+
 </html>

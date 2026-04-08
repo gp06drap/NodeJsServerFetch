@@ -108,6 +108,8 @@ app.get('/api/messages', (req, res) => {
 
 app.post('/api/messages', (req,res) => {
 
+    console.log(req.body);
+
     if (req.body.text != null && req.body.author != null){
         let newResp = {id: nextId,
         text: req.body.text,
