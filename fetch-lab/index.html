@@ -22,17 +22,20 @@
         </div>
       </div>
     </section>
-    <form name="jjj" id="input-form" action="https://formspree.io/f/mreodrkq">
-
-      <label for="text">Message</label>
-      <input name="text" id="text" type="text">
+    <form method="POST" id="input-form">
+      <label>
+        Your email:
+        <input type="email" name="email">
+      </label>
+      <label>
+        Your message:
+        <input type="text" name="message"></input>
+      </label>
       <label for="author">Author</label>
       <input name="author" id="author" type="text">
-      <label for="email">Email</label>
-      <input name="email" id="email" type="email">
 
-      <input type="submit" id="webhook"></input>
-
+      <button id="webhook" type="button">Send to Webhook</button>
+      <button id="formspree" type="button">Send to Formspree</button>
     </form>
 
 
@@ -64,15 +67,29 @@
 
 
 
-      document.getElementById("input-form").addEventListener("submit", function (e) {
-        e.preventDefault();
+      document.getElementById("webhook").addEventListener("click", function () {
         let url = "https://potential-guide-jjq5v64xgxq6h59r-8080.app.github.dev/api/messages";
-        let params = new FormData(document.getElementById("input-form")); // pass in entire form tag
+        let params = new FormData(document.getElementById("input-form"));
         fetch(url, { method: "POST", body: params })
           .then(statusCheck)
           .then(resp => resp.json())
           .then(handleResponse)
           .catch(handleError);
+      });
+
+      document.getElementById("formspree").addEventListener("click", async () => {
+        const form = document.getElementById('input-form');
+        const response = await fetch('https://formspree.io/f/mreodrkq', {
+          method: 'POST',
+          body: new FormData(form),
+          headers: { 'Accept': 'application/json' }
+        });
+        if (response.ok) {
+          alert('Message sent!');
+          form.reset();
+        } else {
+          alert('Something went wrong. Please try again.');
+        }
       });
 
 
