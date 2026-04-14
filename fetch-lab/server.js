@@ -1,7 +1,9 @@
 "use strict";
 
 const express = require('express');
+const cors = require('cors');
 const app = express();
+app.use(cors());
 let messages = [
     { id: 1, text: "Welcome to the message board!", author: "Admin" },
 ];
